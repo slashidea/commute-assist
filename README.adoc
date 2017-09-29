@@ -8,11 +8,13 @@ $ gradle -p commute-assist-service/ bootRun
 
 == Currently implemented REST methods
 
-List of all available ride options for user:
+List of all available ride options for the user:
 
 ----
 $ curl -X GET http://localhost:8080/user/1001/ride/options
 ----
+
+sample result:
 
 [source,json]
 ----
