@@ -5,6 +5,10 @@ public class LatLon {
     private Double latitude;
 
     private Double longitude;
+    
+    public LatLon() {
+        
+    }
 
     public LatLon(Double latitude, Double longitude) {
         this.latitude = latitude;

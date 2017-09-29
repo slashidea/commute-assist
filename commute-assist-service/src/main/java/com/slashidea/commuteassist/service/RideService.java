@@ -5,16 +5,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import com.slashidea.commuteassist.model.LatLon;
 import com.slashidea.commuteassist.model.RideOption;
+import com.slashidea.commuteassist.model.UserGroup;
 import com.slashidea.commuteassist.model.VehicleTypeEnum;
+import com.slashidea.commuteassist.store.UserStore;
 
 @Component
 public class RideService {
+    
+    private Logger LOG = LoggerFactory.getLogger(RideService.class);
+    
+    @Autowired
+    private UserStore userStore;
 
     public Map<Integer, List<RideOption>> getPossibleRideOptionsMock(Long userId) {
+        LOG.debug("getPossibleRideOptionsMock(), userId: " + userId);
+        Assert.notNull(userId, "userId can not be null!");
+        
         Map<Integer, List<RideOption>> possibletravelOptions = new HashMap<>();  
         
         List<RideOption> toList1 = new ArrayList<>();
@@ -36,6 +50,28 @@ public class RideService {
         possibletravelOptions.put(2, toList2);       
         possibletravelOptions.put(3, toList3); 
         return possibletravelOptions;        
+    }
+    
+    public void assignUser(Long userId, Long driverId, LatLon latLon) {
+        LOG.debug("assignUser()");
+        Assert.notNull(userId, "userId can not be null!"); 
+        Assert.notNull(driverId, "driverId can not be null!"); 
+        Assert.notNull(latLon, "latLon can not be null!");
+        
+        LOG.debug("userId: " + userId);
+        LOG.debug("driverId: " + driverId);
+        LOG.debug("latLon: " + latLon);
+        
+        if (userStore.getUserGroup().stream().filter(
+                ug -> (driverId.equals(ug.getDriverId()) 
+                        && userId.equals(ug.getUserId())
+                        && latLon.equals(ug.getLatLon()))).findAny().isPresent()) {
+            // already exists, do nothing
+            LOG.warn("Already stored."); 
+            return;
+        }
+        
+        userStore.getUserGroup().add(new UserGroup(userId, driverId, latLon));
     }
     
 }

@@ -6,6 +6,16 @@ public class UserGroup {
     private Long driverId;
     private LatLon latLon;
 
+    public UserGroup() {
+        
+    }
+    
+    public UserGroup(Long userId, Long driverId, LatLon latLon) {
+        this.userId = userId;
+        this.driverId = driverId;
+        this.latLon = latLon;
+    }
+
     public Long getUserId() {
         return userId;
     }

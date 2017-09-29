@@ -1,4 +1,4 @@
-== Required Steps
+== Run project
 
 To build and run this project:
 
@@ -6,28 +6,21 @@ To build and run this project:
 $ gradle -p commute-assist-service/ bootRun
 ----
 
-You’ll build a service that will accept HTTP GET requests at:
+== Currently implemented REST methods
+
+List of all available ride options for user:
 
 ----
-http://localhost:8080/greeting
+$ curl -X GET http://localhost:8080/user/1001/ride/options
 ----
-
-and respond with a link:/understanding/JSON[JSON] representation of a greeting:
 
 [source,json]
 ----
-{"id":1,"content":"Hello, World!"}
+[{"priority":1,"rideOptions":[{"vehicleType":"CAR","timestamp":1506723990541,"latLon":{"latitude":4.968046,"longitude":-94.420307}},{"vehicleType":"BIKE","timestamp":1506723990541,"latLon":{"latitude":44.33328,"longitude":-89.132008}},{"vehicleType":"CAR","timestamp":1506723990541,"latLon":{"latitude":44.31328,"longitude":-89.122008}}]},{"priority":2,"rideOptions":[{"vehicleType":"BIKE","timestamp":1506723990541,"latLon":{"latitude":4.968046,"longitude":-94.420307}},{"vehicleType":"BIKE","timestamp":1506723990541,"latLon":{"latitude":44.33328,"longitude":-89.132008}},{"vehicleType":"TRAIN","timestamp":1506723990541,"latLon":{"latitude":44.31328,"longitude":-89.122008}}]},{"priority":3,"rideOptions":[{"vehicleType":"BIKE","timestamp":1506723990541,"latLon":{"latitude":4.958046,"longitude":-94.420307}},{"vehicleType":"TRAIN","timestamp":1506723990541,"latLon":{"latitude":44.32328,"longitude":-89.132008}},{"vehicleType":"TRAIN","timestamp":1506723990541,"latLon":{"latitude":44.32328,"longitude":-89.122008}}]}]
 ----
 
-You can customize the greeting with an optional `name` parameter in the query string:
+Assign a user to the driver at specific location:
 
 ----
-http://localhost:8080/greeting?name=User
-----
-
-The `name` parameter value overrides the default value of "World" and is reflected in the response:
-
-[source,json]
-----
-{"id":1,"content":"Hello, User!"}
+$ curl -H "Content-Type: application/json" -X POST -d '{"userId":1001, "driverId":1002, "latLon":{"latitude":3.455546, "longitude":44.456577}}' http://localhost:8080/ride/assign
 ----
