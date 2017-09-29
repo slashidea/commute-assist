@@ -28,3 +28,15 @@ Assign a user to the driver at specific location:
 ----
 $ curl -H "Content-Type: application/json" -X POST -d '{"userId":1001, "driverId":1002, "latLon":{"latitude":3.455546, "longitude":44.456577}}' http://localhost:8080/ride/assign
 ----
+
+Send message with delay:
+
+----
+$ curl -H "Content-Type: application/json" -X POST -d '{"userId":1001, "message":"Test message", "delayInMillis":"36000"}' http://localhost:8080/user/1001/delay/message
+----
+
+Send user current position:
+
+----
+$ curl -H "Content-Type: application/json" -X POST -d '{"userId":1001, "altitude":123, "latLon": {"latitude":43.123123, "longitude":4.456456}, "speed":45.34, "timestamp":1506725623379 }' http://localhost:8080/user/1001/trackpoint
+----

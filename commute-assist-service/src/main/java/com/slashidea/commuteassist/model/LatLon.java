@@ -3,7 +3,6 @@ package com.slashidea.commuteassist.model;
 public class LatLon {
 
     private Double latitude;
-
     private Double longitude;
     
     public LatLon() {

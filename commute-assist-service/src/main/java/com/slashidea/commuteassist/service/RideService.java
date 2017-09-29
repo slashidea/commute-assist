@@ -15,7 +15,7 @@ import com.slashidea.commuteassist.model.LatLon;
 import com.slashidea.commuteassist.model.RideOption;
 import com.slashidea.commuteassist.model.UserGroup;
 import com.slashidea.commuteassist.model.VehicleTypeEnum;
-import com.slashidea.commuteassist.store.UserStore;
+import com.slashidea.commuteassist.store.InMemoryStore;
 
 @Component
 public class RideService {
@@ -23,7 +23,7 @@ public class RideService {
     private Logger LOG = LoggerFactory.getLogger(RideService.class);
     
     @Autowired
-    private UserStore userStore;
+    private InMemoryStore store;
 
     public Map<Integer, List<RideOption>> getPossibleRideOptionsMock(Long userId) {
         LOG.debug("getPossibleRideOptionsMock(), userId: " + userId);
@@ -62,7 +62,7 @@ public class RideService {
         LOG.debug("driverId: " + driverId);
         LOG.debug("latLon: " + latLon);
         
-        if (userStore.getUserGroup().stream().filter(
+        if (store.getUserGroup().stream().filter(
                 ug -> (driverId.equals(ug.getDriverId()) 
                         && userId.equals(ug.getUserId())
                         && latLon.equals(ug.getLatLon()))).findAny().isPresent()) {
@@ -71,7 +71,7 @@ public class RideService {
             return;
         }
         
-        userStore.getUserGroup().add(new UserGroup(userId, driverId, latLon));
+        store.getUserGroup().add(new UserGroup(userId, driverId, latLon));
     }
     
 }

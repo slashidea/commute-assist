@@ -17,14 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.slashidea.commuteassist.model.Ride;
 import com.slashidea.commuteassist.model.RideOption;
+import com.slashidea.commuteassist.model.ShiftMessage;
+import com.slashidea.commuteassist.model.Trackpoint;
 import com.slashidea.commuteassist.model.UserGroup;
 import com.slashidea.commuteassist.service.RideService;
+import com.slashidea.commuteassist.service.ShiftService;
+import com.slashidea.commuteassist.service.TrackService;
 
 @RestController
 public class MainController {
     
     @Autowired
     private RideService rideService;
+    
+    @Autowired
+    private TrackService trackService;
+    
+    @Autowired
+    private ShiftService shiftService;
 
     @RequestMapping("/user/{userId}/ride/options")
     public List<Ride> getRideOptions(@PathVariable(value="userId", required=true) Long userId) {        
@@ -42,4 +52,20 @@ public class MainController {
         rideService.assignUser(userGroup.getUserId(), userGroup.getDriverId(), userGroup.getLatLon());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "/user/{userId}/trackpoint", method = RequestMethod.POST) 
+    public ResponseEntity<?> saveTrackpoint(@PathVariable(value="userId", required=true) Long userId,
+            @RequestBody Trackpoint trackpoint) {        
+        trackService.saveTrackpoint(userId, trackpoint);       
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/user/{userId}/delay/message", method = RequestMethod.POST) 
+    public ResponseEntity<?> saveTrackpoint(@PathVariable(value="userId", required=true) Long userId,
+            @RequestBody ShiftMessage shiftMessage) {        
+        shiftService.saveShiftMessage(userId, shiftMessage);       
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    
 }
