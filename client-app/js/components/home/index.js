@@ -31,9 +31,29 @@ class Home extends Component {
   };
   constructor() {
     super();
-    this.state = { list: ['first', 'second', 'third'] };
+    this.state = {
+      list: [
+        { name: 'Car sharing', toPage: 'CarSharing' },
+        { name: 'Dalsi sposob 1', toPage: 'DetailSharing' },
+        { name: 'Dalsi sposob 2', toPage: 'DetailSharing' },
+      ],
+      isCarShareSelected: false,
+    };
+  }
+  componentDidMount() {
+    AsyncStorage.getItem('isCreated').then((isCreated) => {
+      if (isCreated === 'true') {
+        this.setState({ isCarShareSelected: true });
+      }
+    });
+    AsyncStorage.getItem('isJoined').then((isJoined) => {
+      if (isJoined === 'true') {
+        this.setState({ isCarShareSelected: true });
+      }
+    });
   }
   render() {
+    const { isCarShareSelected } = this.state;
     return (
       <Container style={styles.container}>
         <Header>
@@ -56,29 +76,23 @@ class Home extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Home</Title>
+            <Title>Domov</Title>
           </Body>
-          <Right>
-            <Button
-              transparent
-              onPress={() => DrawerNav.navigate('DrawerOpen')}
-            >
-              <Icon active name="menu" />
-            </Button>
-          </Right>
+          <Right />
         </Header>
         <Content>
           <Grid style={styles.mt}>
-            {this.state.list.map((item, i) => (
-              <Row key={i}>
+            {this.state.list.map(({ name, toPage }) => (
+              <Row key={name}>
                 <Button
-                  bordered
+                  disabled={isCarShareSelected && toPage !== 'CarSharing'}
+                  bordered={!(isCarShareSelected && toPage === 'CarSharing')}
                   style={styles.row}
                   onPress={() =>
-                    this.props.navigation.navigate('BlankPage', { name: { item } })
+                    this.props.navigation.navigate(toPage, { name })
                   }
                 >
-                  <Text style={styles.text}>{item}</Text>
+                  <Text style={styles.text}>{name}</Text>
                 </Button>
               </Row>
             ))}
