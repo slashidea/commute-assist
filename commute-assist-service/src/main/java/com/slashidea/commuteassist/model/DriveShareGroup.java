@@ -1,16 +1,16 @@
 package com.slashidea.commuteassist.model;
 
-public class UserGroup {
+public class DriveShareGroup {
 
     private Long userId;
     private Long driverId;
     private LatLon latLon;
 
-    public UserGroup() {
+    public DriveShareGroup() {
         
     }
     
-    public UserGroup(Long userId, Long driverId, LatLon latLon) {
+    public DriveShareGroup(Long userId, Long driverId, LatLon latLon) {
         this.userId = userId;
         this.driverId = driverId;
         this.latLon = latLon;

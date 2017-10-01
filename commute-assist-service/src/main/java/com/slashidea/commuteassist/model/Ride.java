@@ -3,11 +3,12 @@ package com.slashidea.commuteassist.model;
 import java.util.List;
 
 public class Ride {
-
-    private Integer priority;
-    private List<RideOption> rideOptions;
+	
+	private Long id; //unique ride ID, not used right now
+	private Integer priority;
+    private List<RidePoint> rideOptions;
     
-    public Ride(Integer priority, List<RideOption> rideOptions) {
+    public Ride(Integer priority, List<RidePoint> rideOptions) {
         this.priority = priority;
         this.rideOptions = rideOptions;
     }
@@ -20,17 +21,25 @@ public class Ride {
         this.priority = priority;
     }
 
-    public List<RideOption> getRideOptions() {
+    public List<RidePoint> getRideOptions() {
         return rideOptions;
     }
 
-    public void setRideOptions(List<RideOption> rideOptions) {
+    public void setRideOptions(List<RidePoint> rideOptions) {
         this.rideOptions = rideOptions;
     }    
+    
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
     @Override
     public String toString() {
-        return "Ride [priority=" + priority + ", rideOptions=" + rideOptions + "]";
+        return "Ride [id = " + id + ", priority=" + priority + ", rideOptions=" + rideOptions + "]";
     }
 
 }

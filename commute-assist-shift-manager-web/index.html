@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>JLR Shift Manager DEMO</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  
+    <script type="text/javascript">
+    		function doMagic() {
+
+    		    $.ajax({
+    		        url: "http://localhost:8080/shiftManager"
+    		    }).then(function(data, status, jqxhr) {
+    		    	$('#tableBody').html("");
+    		    	var notificationColor="#4CAF50";
+    		    	var maxError = 0;
+    		    	for (var i = 0, len = data.length; i < len; i++) {
+    		    		var employee = data[i];
+    		    		
+    		    		var timeToParkMinutes = Math.floor(employee.timeToParkingSeconds / 60);
+    		    		var timeToParkSecs = employee.timeToParkingSeconds - (timeToParkMinutes * 60);
+    		    		var classLine="";
+    		    		
+    		    		if(employee.timeToParkingSeconds <= 60 && employee.timeToParkingSeconds >= 10) {
+    		    			classLine="warning";
+    		    			if(maxError < 1) maxError = 1;
+    		    			
+    		    		} else if(employee.timeToParkingSeconds <= 10) {
+    		    			classLine="danger";
+    		    			if(maxError < 2) maxError = 2;
+    		    		}
+    		    		
+   		    		  	var item = "<tr class=\"" + classLine + "\"> " +
+									  	"<td>"+employee.employeeName+
+									  	(employee.message !== null ? "<span class=\"employee-message\">"+employee.message+"</span>" : "") + 
+									  	"</td>" +
+									  	"<td class=\"text-right\">"+timeToParkMinutes+":"+(timeToParkSecs < 10 ? "0" : "") + timeToParkSecs+"</td>" +
+								 	"</tr>";
+						$('#tableBody').append(item);
+    		    		
+    		    		//changing header regarding number of missing
+   		    		}
+    		    	$('#mainNotificationHeader').html("All Employees are on time");
+    		    	$('#notificationLead').html("Wohoo, everything is ok!");
+    		    	
+    		    	if(maxError == 1) {
+    		    		notificationColor="#FFC107";
+    		    		$('#mainNotificationHeader').html("Missing employees!");
+        		    	$('#notificationLead').html("Some employees will probably miss the shift!");
+        		    	
+    		    	} else if(maxError >= 2) {
+    		    		$('#mainNotificationHeader').html("Warning!");
+    		    		$('#notificationLead').html("Some employees are already missing!");
+    		    		notificationColor="#f44336";	
+    		    	} 
+    		    	
+    		    	$('#notificationBar').css("background-color", notificationColor);
+    		    	
+
+//     		    	console.log(data[0].employeeName);
+//     		    	timeToParkingSeconds
+//     		    	message
+    		    	//trackpoint.latLon.
+    		       
+    		    });
+    		}
+    		$(document).ready(function() {
+//     			setInterval(function(){ doMagic(); }, 5000);
+    			doMagic(); 
+    		});
+    	
+    
+    </script>
+    
+    <style type="text/css">
+	    .active td{
+	    	
+	    }
+	    .success td{
+	    	background: #dff0d8;
+	    }
+	    .danger td{
+	    	background: #f2dede;
+	    }
+    	.warning td{
+    		background: #fcf8e3;
+    	}
+    	.employee-message {
+    		display: block;
+    		font-size: 0.9em;
+    		color: #b71c1c;
+    	}
+    </style>
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Shift Manager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#times">Times</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#map">Map</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="text-white" id="notificationBar">
+	    <div >
+	      <div class="container text-center">
+	        <h1><span id="mainNotificationHeader">All Employees are on time</span></h1>
+	        <p class="lead" id="notificationLead">Wohoo, everything is ok!</p>
+	      </div>
+      	</div>
+    </header>
+
+    <section id="times">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+          	<h1 class="text-center">Shift 8:00</h1>
+          	<div class="table-responsive">
+          		<span id="data"></span>
+          	
+	            <table class="table">
+	            	<tbody id="tableBody">
+					  	<!-- tr class="active">
+						  	<td>Jon Snow</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+					 	</tr>
+						<tr class="success">
+							<td>Tyrion Lannister</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+						</tr>
+						<tr class="warning">
+							<td>Cersei Lannister<span class="fa fa-warning"></span></td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+						</tr>
+						<tr class="danger">
+							<td>Daenerys Targaryen <span class="fa fa-warning"></span>
+								<span class="employee-message">My Dragon was hit by a sword, I am currently in a BUS.</span>
+							</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+						</tr>
+						<tr class="danger">
+							<td>Sansa Stark <span class="fa fa-warning"></span>
+							</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+						</tr>
+						<tr>
+						  	<td>Arya Stark</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+					 	</tr>
+					 	<tr>
+						  	<td>Jaime Lannister</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+					 	</tr>
+					 	<tr>
+						  	<td>Jorah Mormont</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+					 	</tr>
+					 	<tr>
+						  	<td>Theon Greyjoy</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+					 	</tr>
+					 	<tr>
+						  	<td>Samwell Tarly</td>
+						  	<td class="text-right"><span id="time1">7:32</span></td>
+					 	</tr -->
+					</tbody>
+				</table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">JLR Dev Challenge 2017</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom JavaScript for this theme -->
+    <script src="js/scrolling-nav.js"></script>
+
+  </body>
+
+</html>

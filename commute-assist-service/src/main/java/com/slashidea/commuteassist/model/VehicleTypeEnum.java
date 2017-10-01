@@ -7,6 +7,6 @@ package com.slashidea.commuteassist.model;
  */
 public enum VehicleTypeEnum {
     
-    CAR, BUS, TRAIN, BIKE;
+    CAR, BUS, TRAIN, BIKE, DRIVE_SHARE;
 
 }
