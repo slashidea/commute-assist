@@ -1,6 +1,5 @@
 package com.slashidea.commuteassist.store;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.slashidea.commuteassist.model.RidePoint;
 import com.slashidea.commuteassist.model.RidePointIndex;
-import com.slashidea.commuteassist.model.ShiftMessage;
 import com.slashidea.commuteassist.model.Trackpoint;
 import com.slashidea.commuteassist.model.User;
 import com.slashidea.commuteassist.model.UserCurrentPosition;

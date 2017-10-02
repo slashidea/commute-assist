@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.slashidea.commuteassist.model.LatLon;
 import com.slashidea.commuteassist.model.Ride;
 import com.slashidea.commuteassist.model.RidePoint;
 import com.slashidea.commuteassist.model.ShiftMessage;
 import com.slashidea.commuteassist.model.Trackpoint;
-import com.slashidea.commuteassist.model.DriveShareGroup;
 import com.slashidea.commuteassist.model.UserCurrentPosition;
 import com.slashidea.commuteassist.service.RideService;
 import com.slashidea.commuteassist.service.ShiftService;
