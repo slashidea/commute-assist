@@ -1,5 +1,3 @@
-= Smart Commute Assistant
-
 == Build & Run project
 
 To build and run this project:
